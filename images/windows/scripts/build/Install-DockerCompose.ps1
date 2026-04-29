@@ -8,7 +8,10 @@ $toolsetVersion = (Get-ToolsetContent).docker.components.compose
 $composeVersion = (Get-GithubReleasesByVersion -Repo "docker/compose" -Version "${toolsetVersion}").version
 $dockerComposev2Url = "https://github.com/docker/compose/releases/download/v${composeVersion}/docker-compose-windows-x86_64.exe"
 $cliPluginsDir = "C:\ProgramData\docker\cli-plugins"
-if (($dockerVersion -split ".")[0] -ge 29 -and ($dockerVersion -split ".")[1] -ge 2) {
+
+Write-Host "[DEBUG] Detected Docker version: $dockerVersion"
+if ([version]$dockerVersion -ge [version]"29.2") {
+    Write-Host "[DEBUG] Detected Docker version greater than or equal to 29.2, using new cli-plugins directory"
     $cliPluginsDir = "C:\Program Files\Docker\cli-plugins"
 }
 Write-Host "Installing Docker Compose v2 plugin"
